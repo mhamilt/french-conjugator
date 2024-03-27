@@ -18,23 +18,27 @@ let personCodes = {
     "3PL": "ils / elles"
 }
 
-// let table_header = verbConjugationCodes.keys();
-// let table_rows = personCodes.keys();
-
 let verbsJsonData;
 
-$.getJSON("./verbs.json", function (json) {
-    verbsJsonData = json;
+if (localStorage.getItem("verbs") === 'undefined') {
+    $.getJSON("./verbs.json", function (json) {
+        verbsJsonData = json;
+        searchVerbs(window.location.hash.substr(1))
+    });
+    localStorage.setItem("verbs", verbsJsonData)
+    console.log('not local')
+}
+else {
+    console.log('local')
     document.getElementById("searchbar").disabled = false
+    verbsJsonData = localStorage.getItem("verbs");    
+}
 
-    searchVerbs(window.location.hash.substr(1))
-});
 
 function searchVerbs(verb) {
     let verbdata = getVerbData(verb)
 
     if (verbdata) {
-        console.log(verb);
         fillTable(verbdata)
     }
 }
@@ -63,20 +67,16 @@ function getConjugation(verbData, tense, person) {
 }
 
 function fillTable(verbData) {
-    console.log(verbData)
     for (const tense in verbConjugationCodes) {
         for (const person in personCodes) {
-            console.log(getCell(tense, person));
             getCell(tense, person).innerText = getConjugation(verbData, tense, person);
         }
     }
-    if (verbData["INF"] === `être`)
-    {
-        getCell("person", "1SG").innerText = `je / j'`;    
-    } 
-    else
-    {
-    getCell("person", "1SG").innerText = ['a', 'e', 'i', 'o', 'u'].includes(verbData["INF"][0].normalize("NFD").replace(/[\u0300-\u036f]/g, "")) ? `j'` : `je`;
+    if (verbData["INF"] === `être`) {
+        getCell("person", "1SG").innerText = `je / j'`;
+    }
+    else {
+        getCell("person", "1SG").innerText = ['a', 'e', 'i', 'o', 'u'].includes(verbData["INF"][0].normalize("NFD").replace(/[\u0300-\u036f]/g, "")) ? `j'` : `je`;
     }
     document.getElementById("INF").innerText = " " + verbData["INF"];
     document.getElementById("PST.PTCP").innerText = " " + verbData["PST.PTCP"];
@@ -86,7 +86,6 @@ function fillTable(verbData) {
 addEventListener("input", (event) => {
     searchVerbs(event.target.value.toLowerCase().replaceAll(" ", ''));
 });
-console.log(window.location.hash.substr(1))
 
 function fillHeaders() {
     for (const key in personCodes) {
