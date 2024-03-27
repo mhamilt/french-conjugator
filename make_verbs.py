@@ -11,11 +11,12 @@ verbs = {}
 
 with open('verbs.csv') as csvfile:
     data = csv.reader(csvfile, delimiter=',')
-    pprint([(x, y) for x, y in enumerate(next(data))])
-    for row in data:
-        assert strip_accents(row[0])
 
-        verbs[strip_accents(row[0])] = {
+    for row in data:
+        if row[0] == "pouvoir":
+            print(row)
+
+        verbs[row[0]] = {
             "INF": row[0], "GER": row[1], "PRS.PTCP": row[2], "PST.PTCP": row[3],
             "IMP.1SG": row[47], "IMP.2SG": row[48], "IMP.3SG": row[49],
             "IMP.1PL": row[50], "IMP.2PL": row[51], "IMP.3PL": row[52],
