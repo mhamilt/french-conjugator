@@ -25,7 +25,12 @@ if (localStorage.getItem("verbs") === 'undefined' || !localStorage.getItem("verb
         verbsJsonData = json;
         document.getElementById("searchbar").disabled = false;
         searchVerbs(window.location.hash.substr(1));
-        localStorage.setItem("verbs", JSON.stringify(verbsJsonData));
+        try {
+            localStorage.setItem("verbs", LZString.compress(JSON.stringify(verbsJsonData)));
+        }
+        catch (e) {
+            console.log("Local Storage is full, Please empty data");
+        }
     });
     console.log('not local');
 }
