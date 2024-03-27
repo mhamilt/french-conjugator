@@ -20,20 +20,19 @@ let personCodes = {
 
 let verbsJsonData;
 
-if (localStorage.getItem("verbs") === 'undefined' || !localStorage.getItem("verbs") ) {
+if (localStorage.getItem("verbs") === 'undefined' || !localStorage.getItem("verbs")) {
     $.getJSON("./verbs.json", function (json) {
         verbsJsonData = json;
         document.getElementById("searchbar").disabled = false;
         searchVerbs(window.location.hash.substr(1));
-        localStorage.setItem("verbs", verbsJsonData);
-    });    
+        localStorage.setItem("verbs", JSON.stringify(verbsJsonData));
+    });
     console.log('not local');
 }
 else {
     console.log('local');
-    console.log(localStorage.getItem("verbs"));
     document.getElementById("searchbar").disabled = false
-    verbsJsonData = localStorage.getItem("verbs");    
+    verbsJsonData = JSON.parse(LZString.decompress(localStorage.getItem('verbs')));
 }
 
 
