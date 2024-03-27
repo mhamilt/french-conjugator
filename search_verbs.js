@@ -20,7 +20,7 @@ let personCodes = {
 
 let verbsJsonData;
 
-if (localStorage.getItem("verbs") === 'undefined') {
+if (localStorage.getItem("verbs") === 'undefined' || !localStorage.getItem("verbs") ) {
     $.getJSON("./verbs.json", function (json) {
         verbsJsonData = json;
         document.getElementById("searchbar").disabled = false;
