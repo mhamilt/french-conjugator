@@ -40,7 +40,7 @@ function searchVerbs(verb) {
 }
 
 function getCell(column_id, row_id) {
-    
+
     let column_element = $('#' + column_id.replace('.', '\\.')).index();
     let row_element = $('#' + row_id);
     return row_element.find('td').eq(column_element)[0];
@@ -70,6 +70,14 @@ function fillTable(verbData) {
             getCell(tense, person).innerText = getConjugation(verbData, tense, person);
         }
     }
+    if (verbData["INF"] === `être`)
+    {
+        getCell("person", "1SG").innerText = `je / j'`;    
+    } 
+    else
+    {
+    getCell("person", "1SG").innerText = ['a', 'e', 'i', 'o', 'u'].includes(verbData["INF"][0].normalize("NFD").replace(/[\u0300-\u036f]/g, "")) ? `j'` : `je`;
+    }
     document.getElementById("INF").innerText = " " + verbData["INF"];
     document.getElementById("PST.PTCP").innerText = " " + verbData["PST.PTCP"];
     document.getElementById("GER").innerText = " " + verbData["GER"];
@@ -83,9 +91,7 @@ console.log(window.location.hash.substr(1))
 function fillHeaders() {
     for (const key in personCodes) {
         if (Object.hasOwnProperty.call(personCodes, key)) {
-            getCell("person", key, 'td').innerText = personCodes[key]
-            // console.log(key)
-            // console.log($('#'+key));
+            getCell("person", key).innerText = personCodes[key]
         }
     }
 
