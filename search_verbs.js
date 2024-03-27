@@ -23,14 +23,15 @@ let verbsJsonData;
 if (localStorage.getItem("verbs") === 'undefined') {
     $.getJSON("./verbs.json", function (json) {
         verbsJsonData = json;
-        document.getElementById("searchbar").disabled = false
-        searchVerbs(window.location.hash.substr(1))
-        localStorage.setItem("verbs", verbsJsonData)
+        document.getElementById("searchbar").disabled = false;
+        searchVerbs(window.location.hash.substr(1));
+        localStorage.setItem("verbs", verbsJsonData);
     });    
-    console.log('not local')
+    console.log('not local');
 }
 else {
-    console.log('local')
+    console.log('local');
+    console.log(localStorage.getItem("verbs"));
     document.getElementById("searchbar").disabled = false
     verbsJsonData = localStorage.getItem("verbs");    
 }
