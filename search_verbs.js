@@ -20,13 +20,15 @@ let personCodes = {
 
 let verbsJsonData;
 
-if (localStorage.getItem("verbs") === 'undefined' || !localStorage.getItem("verbs")) {
+const localStorageName = "verbs_french"
+
+if (localStorage.getItem(localStorageName) === 'undefined' || !localStorage.getItem(localStorageName)) {
     $.getJSON("./verbs.json", function (json) {
         verbsJsonData = json;
         document.getElementById("searchbar").disabled = false;
         searchVerbs(window.location.hash.substr(1));
         try {
-            localStorage.setItem("verbs", LZString.compress(JSON.stringify(verbsJsonData)));
+            localStorage.setItem(localStorageName, LZString.compress(JSON.stringify(verbsJsonData)));
         }
         catch (e) {
             console.log("Local Storage is full, Please empty data");
@@ -37,7 +39,7 @@ if (localStorage.getItem("verbs") === 'undefined' || !localStorage.getItem("verb
 else {
     console.log('local');
     document.getElementById("searchbar").disabled = false
-    verbsJsonData = JSON.parse(LZString.decompress(localStorage.getItem('verbs')));
+    verbsJsonData = JSON.parse(LZString.decompress(localStorage.getItem('verbs')));    
 }
 
 
@@ -73,6 +75,9 @@ function getConjugation(verbData, tense, person) {
 }
 
 function fillTable(verbData) {
+
+    console.log(verbData["INF"].normalize("NFD").replace(/\p{Diacritic}/gu, ""))
+
     for (const tense in verbConjugationCodes) {
         for (const person in personCodes) {
             getCell(tense, person).innerText = getConjugation(verbData, tense, person);
