@@ -23,7 +23,7 @@ let verbsJsonData;
 const localStorageName = "verbs_french"
 
 if (localStorage.getItem(localStorageName) === 'undefined' || !localStorage.getItem(localStorageName)) {
-    $.getJSON("./verbs.json", function (json) {
+    $.getJSON("./french_verbs.json", function (json) {
         verbsJsonData = json;
         document.getElementById("searchbar").disabled = false;
         searchVerbs(window.location.hash.substr(1));
