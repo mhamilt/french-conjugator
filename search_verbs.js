@@ -20,10 +20,10 @@ let personCodes = {
 
 let verbsJsonData;
 
-const localStorageName = "verbs_french"
+const localStorageName = "french_verbs"
 
 if (localStorage.getItem(localStorageName) === 'undefined' || !localStorage.getItem(localStorageName)) {
-    $.getJSON("./french_verbs.json", function (json) {
+    $.getJSON(`./${localStorageName}.json`, function (json) {
         verbsJsonData = json;
         document.getElementById("searchbar").disabled = false;
         searchVerbs(window.location.hash.substr(1));
@@ -39,7 +39,7 @@ if (localStorage.getItem(localStorageName) === 'undefined' || !localStorage.getI
 else {
     console.log('local');
     document.getElementById("searchbar").disabled = false
-    verbsJsonData = JSON.parse(LZString.decompress(localStorage.getItem('verbs')));    
+    verbsJsonData = JSON.parse(LZString.decompress(localStorage.getItem(localStorageName)));    
 }
 
 
