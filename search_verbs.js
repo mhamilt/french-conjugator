@@ -19,28 +19,32 @@ let personCodes = {
 }
 
 let verbsJsonData;
-
 const localStorageName = "french_verbs"
 
-if (localStorage.getItem(localStorageName) === 'undefined' || !localStorage.getItem(localStorageName)) {
-    $.getJSON(`./${localStorageName}.json`, function (json) {
-        verbsJsonData = json;
-        document.getElementById("searchbar").disabled = false;
-        searchVerbs(window.location.hash.substr(1));
-        try {
-            localStorage.setItem(localStorageName, LZString.compress(JSON.stringify(verbsJsonData)));
-        }
-        catch (e) {
-            console.log("Local Storage is full, Please empty data");
-        }
-    });
-    console.log('not local');
+async function setup()
+{
+    if (localStorage.getItem(localStorageName) === 'undefined' || !localStorage.getItem(localStorageName)) {
+        $.getJSON(`./${localStorageName}.json`, function (json) {
+            verbsJsonData = json;
+            document.getElementById("searchbar").disabled = false;
+            searchVerbs(window.location.hash.substr(1));
+            try {
+                localStorage.setItem(localStorageName, LZString.compress(JSON.stringify(verbsJsonData)));
+            }
+            catch (e) {
+                console.log("Local Storage is full, Please empty data");
+            }
+        });
+        console.log('not local');
+    }
+    else {
+        console.log('local');
+        document.getElementById("searchbar").disabled = false
+        verbsJsonData = JSON.parse(LZString.decompress(localStorage.getItem(localStorageName)));    
+    }
 }
-else {
-    console.log('local');
-    document.getElementById("searchbar").disabled = false
-    verbsJsonData = JSON.parse(LZString.decompress(localStorage.getItem(localStorageName)));    
-}
+
+setup();
 
 
 function searchVerbs(verb) {
